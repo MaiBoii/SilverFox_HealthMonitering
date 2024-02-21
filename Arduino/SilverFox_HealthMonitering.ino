@@ -5,11 +5,15 @@
 void setup() {
   Serial.begin(9600);
   //pinMode(BUZZER_PIN, OUTPUT);
-  ss.begin(GPSBaud);
+  //ss.begin(GPSBaud);
+
+  // 초음파 센서 핀 설정
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
 }
 
 void loop() {
-  GpsReceiver();
+  //GpsReceiver();
   // if (judgeEmergency()) {
   //   Serial.println("응급상황 발생!");
   //   musicStart(); // 응급 상황 발생 시 음악 연주

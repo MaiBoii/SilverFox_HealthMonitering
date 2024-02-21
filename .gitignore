@@ -1,1 +1,3 @@
 /RaspBerry/.env
+/.vscode
+.gitignore

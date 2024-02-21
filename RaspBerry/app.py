@@ -1,21 +1,43 @@
-# import serial
-
-# ser = serial.Serial('/dev/cu.usbmodem11301', 9600)
-
-# while True:
-#     print(ser.readline().strip().decode('utf-8'))
-
+import serial
 import os
 from dotenv import load_dotenv
+import mysql.connector
 
 # .env 파일로부터 환경 변수 로드
 load_dotenv()
 
-# 환경 변수 사용 예시
+# 데이터베이스 관련 환경 변수 로드
 db_host = os.getenv("DB_HOST")
 db_user = os.getenv("DB_USER")
 db_pass = os.getenv("DB_PASS")
+db_name = os.getenv("DB_NAME")
 
-print(f"DB Host: {db_host}")
-print(f"DB User: {db_user}")
-print(f"DB Password: {db_pass}")
+# MySQL 서버에 연결
+mydb = mysql.connector.connect(
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_name
+)
+
+# 연결이 성공하면 'Connected!'를 출력
+if mydb.is_connected():
+  print('Connected with '+db_name+' database!')
+
+# 데이터베이스에서 쿼리를 실행하는 커서 객체 생성
+mycursor = mydb.cursor()
+
+# 시리얼 통신 관련 환경 변수 로드
+ser_port = os.getenv("SER_PORT")
+ser_baud = os.getenv("SER_BAUD")
+
+def main():
+   dd = 0
+    # ser = serial.Serial('/dev/cu.usbmodem11301', 9600)
+
+    # while True:
+    #     print(ser.readline().strip().decode('utf-8'))
+  
+
+if __name__ == "__main__":
+    main()
