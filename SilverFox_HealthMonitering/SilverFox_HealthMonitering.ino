@@ -8,8 +8,9 @@ void setup() {
   //ss.begin(GPSBaud);
 
   // 초음파 센서 핀 설정
-  pinMode(TRIG, OUTPUT);
-  pinMode(ECHO, INPUT);
+  // pinMode(TRIG, OUTPUT);
+  // pinMode(ECHO, INPUT);
+  measureInitGradient();
 }
 
 void loop() {
@@ -21,6 +22,10 @@ void loop() {
   //   Serial.println("정상 상태");
   //   // 정상 상태일 때 추가적인 작업을 수행할 수 있음
   // }
-  delay(1000); // 상태 확인 주기
+  // measureDistanceFromHuman();
+   measureGradient();
+
+
+  //Serial.println("Fuck U!!");
   //ForTestSerialMonitor();
 }

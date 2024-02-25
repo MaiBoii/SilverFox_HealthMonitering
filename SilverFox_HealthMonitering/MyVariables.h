@@ -39,14 +39,9 @@ extern bool isMagnet; // 자석 감지 상태를 유지하기 위한 변수
 //extern unsigned long lastMovementTime = 0; // 바퀴가 마지막으로 움직인 시각
 
 // 보행보조차 기울기 관련 변수
-extern const int xPin;
-extern const int yPin;
-extern const int zPin;
-extern int xRead, yRead, zRead;
-extern int minVal;
-extern int maxVal;
-extern int xAng, yAng, zAng;
-extern int x, y, z;
+extern int initialX;
+extern int initialY;
+extern int initialZ;
 
 // 사람과의 거리 측정 관련 변수
 extern long duration;
@@ -61,6 +56,6 @@ extern float weight;
 // GPS 모듈과 연결된 핀 설정
 extern const int RXPin;
 extern const int TXPin;
-extern const uint32_t GPSBaud;
+//extern const uint32_t GPSBaud;
 
 #endif

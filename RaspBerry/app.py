@@ -1,5 +1,7 @@
 import serial
 import os
+import time
+import json
 from dotenv import load_dotenv
 import mysql.connector
 
@@ -22,7 +24,7 @@ mydb = mysql.connector.connect(
 
 # 연결이 성공하면 'Connected!'를 출력
 if mydb.is_connected():
-  print('Connected with '+db_name+' database!')
+  print('Connected with '+ db_name +' database!')
 
 # 데이터베이스에서 쿼리를 실행하는 커서 객체 생성
 mycursor = mydb.cursor()
@@ -32,12 +34,15 @@ ser_port = os.getenv("SER_PORT")
 ser_baud = os.getenv("SER_BAUD")
 
 def main():
-   dd = 0
-    # ser = serial.Serial('/dev/cu.usbmodem11301', 9600)
-
-    # while True:
-    #     print(ser.readline().strip().decode('utf-8'))
-  
+    ser = serial.Serial(ser_port, ser_baud)
+    serial_data = ser.readline().strip().decode('utf-8')
+    while True:
+        # 만약 시리얼 데이터가 "HumanDistance Over"라면
+        if 'HumanDistance' in serial_data:
+            sql = "INSERT INTO test (distance) VALUES (1.0)"
+            mycursor.execute(sql)
+            mydb.commit()
+            print(mycursor.rowcount, "record inserted.")
 
 if __name__ == "__main__":
     main()
