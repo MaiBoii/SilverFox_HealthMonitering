@@ -77,14 +77,19 @@ bool measureDistanceFromHuman() {
   duration = pulseIn (ECHO, HIGH);
   cm = duration / 58.0; 
 
-  if (cm<30){
+  //만일 사람이 30cm 이상 기기로부터 멀어졌을 경우
+  if (cm>30){
     return true;
   }
   else {
     return false;
   }
-  delay(2000);
 }
+
+int initialX = 0;
+int initialY = 0;
+int initialZ = 0;
+
 //기울기 초깃값 측정
 void measureInitGradient() {
   const int xPin = 0;
@@ -98,7 +103,7 @@ void measureInitGradient() {
 }
 
 // 기울기 측정 센서
-void measureGradient() {
+bool measureGradient() {
   const int xPin = 0;
   const int yPin = 1;
   const int zPin = 2;
@@ -123,41 +128,46 @@ void measureGradient() {
   int deltaY = yRead - initialY;
   int deltaZ = zRead - initialZ;
 
-  x = RAD_TO_DEG * (atan2(-yAng, -zAng) + PI);
-  y = RAD_TO_DEG * (atan2(-xAng, -zAng) + PI);
-  z = RAD_TO_DEG * (atan2(-yAng, -xAng) + PI);
-
-  // 변화량 출력
-  Serial.print("Change in X: ");
-  Serial.println(deltaX);
-  Serial.print("Change in Y: ");
-  Serial.println(deltaY);
-  Serial.print("Change in Z: ");
-  Serial.println(deltaZ);
-
-  // 각도 출력
-  Serial.print("X Angle: ");
-  Serial.println(x);
-  Serial.print("Y Angle: ");
-  Serial.println(y);
-  Serial.print("Z Angle: ");
-  Serial.println(z);
-
-  delay(1000);
+  // 모듈이 60도 이상 기울어졌을 경우
+  if ((deltaX > 60) || (deltaY > 60) || (deltaZ > 60)){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 // 위급상황 판단 함수
-bool judgeEmergency(){
-  measureGradient(); // 기울기 측정
-  measureDistanceFromHuman(); // 사용자와의 거리 측정
+// 30초마다 확인하고, 둘 다 true를 반환하면 위급 상황으로 간주하는 함수
+bool checkEmergencySituation() {
+  // 이전 시간을 저장하기 위한 변수
+  static unsigned long previousTime = 0;
+  // 30초 간격을 설정
+  const unsigned long interval = 3000; // milliseconds
 
-  // 기울기나 거리가 일정 범위를 벗어나면 응급상황으로 간주
-  if ((abs(x) > 60 || abs(y) > 60 || abs(z) > 60) || cm  30) {
-    return true; // 응급상황
-  } else {
-    return false; // 정상 상태
+  // 현재 시간을 가져옴
+  unsigned long currentTime = millis();
+
+  // 30초가 지났는지 확인
+  if (currentTime - previousTime >= interval) {
+    // 이전 시간을 현재 시간으로 업데이트
+    previousTime = currentTime;
+
+    // 거리 측정 함수 호출
+    bool distanceFromHuman = measureDistanceFromHuman();
+    // 기울기 측정 함수 호출
+    bool gradientDetected = measureGradient();
+
+    // 둘 다 true를 반환하면 위급 상황으로 판단
+    if (distanceFromHuman && gradientDetected) {
+      // 위급 상황으로 간주하고 true 반환
+      return true;
+    }
   }
+  // 위급 상황이 아니라면 false 반환
+  return false;
 }
+
 
 // 이동거리 측정
 void measureDistance() {

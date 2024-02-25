@@ -37,7 +37,7 @@ def main():
     ser = serial.Serial(ser_port, ser_baud)
     serial_data = ser.readline().strip().decode('utf-8')
     while True:
-        # 만약 시리얼 데이터가 "HumanDistance Over"라면
+        # 만약 시리얼 데이터가 "HumanDistance "라면
         if 'HumanDistance' in serial_data:
             sql = "INSERT INTO test (distance) VALUES (1.0)"
             mycursor.execute(sql)
