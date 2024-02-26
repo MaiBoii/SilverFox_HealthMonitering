@@ -21,7 +21,7 @@ void musicStart() {
     NOTE_A4, NOTE_A4, NOTE_G4,
     NOTE_F4, NOTE_F4, NOTE_E4, NOTE_E4,
     NOTE_D4, NOTE_D4, NOTE_C4
-  };
+};
 
   int noteDurations[] = {
     4, 4, 4, 4, 

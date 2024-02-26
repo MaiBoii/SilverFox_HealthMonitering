@@ -44,5 +44,6 @@ def main():
             mydb.commit()
             print(mycursor.rowcount, "record inserted.")
 
+
 if __name__ == "__main__":
     main()
