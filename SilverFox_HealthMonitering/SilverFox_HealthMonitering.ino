@@ -21,10 +21,13 @@ void setup() {
   scale.begin(DOUT, SCK);
   scale.set_scale(6000);  // 기본 측정 단위로 보정합니다.
   scale.tare();
+
+  //이동 거리 측정 핀 설정
 }
 
 void loop() {
   //GpsReceiver();
+  measureWeight();
   if (checkEmergencySituation()) {
     Serial.println("Emergency situation detected!"); 
     musicStart();

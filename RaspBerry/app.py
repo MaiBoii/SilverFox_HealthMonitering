@@ -1,11 +1,9 @@
 import serial
 import os
-import time
 import json
 from dotenv import load_dotenv
 import mysql.connector
 import MyFunctions
-import asyncio
 
 # .env 파일로부터 환경 변수 로드
 load_dotenv()
@@ -39,9 +37,9 @@ def main():
     ser = serial.Serial(ser_port, ser_baud)
     serial_data = ser.readline().strip().decode('utf-8')
     while True:
+        
+        #시리얼 통신으로 받은 데이터가 'Weight'일 경우
         if 'Weight' in serial_data:
-        #workout 테이블의 오늘치 데이터에 today_weight의 값이 0.0일시에만 데이터를 입력
-        #오늘치 데이터가 없으면 입력
             if MyFunctions.isThereTodayWeight(mycursor, mydb):
                 print('오늘치 데이터가 없습니다.')
                 print('데이터를 입력합니다.')
@@ -52,7 +50,6 @@ def main():
                 val = (serial_data['Weight'],)
                 mycursor.execute(sql, val)
                 mydb.commit()
-                print(mycursor.rowcount, "record(s) affected")
                 print('데이터 입력 완료')
                 break
             else:
@@ -66,11 +63,11 @@ def main():
                 val = (serial_data['Weight'],)
                 mycursor.execute(sql, val)
                 mydb.commit()
-                print(mycursor.rowcount, "record(s) affected")
                 print('데이터 수정 완료')
                 break
+        
+        #시리얼 통신으로 받은 데이터가 Distance일 경우
         elif 'Distance' in serial_data:
-        #workout 테이블의 오늘치 데이터에 today_distance의 값이 0.0일시에만 데이터를 입력
            if MyFunctions.isThereTodayDistance(mycursor, mydb):
                 print('오늘치 데이터가 없습니다.')
                 print('데이터를 입력합니다.')
@@ -85,7 +82,13 @@ def main():
                 print('데이터 입력 완료')
                 break
            
-        #
-      
+        #긴급 상황시 보호자 스마트폰으로 위치정보 송신
+        elif 'Emergency' in serial_data:
+            print('긴급 상황입니다.')
+            print('보호자 스마트폰으로 위치정보를 송신합니다.')
+            MyFunctions.emergencyCall(mycursor, mydb, '010-1234-5678')
+        
+
+
 if __name__ == "__main__":
     main()

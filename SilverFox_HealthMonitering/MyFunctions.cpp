@@ -173,7 +173,6 @@ bool checkEmergencySituation() {
   return false;
 }
 
-
 // 이동거리 측정
 void measureDistance() {
   hall_value = digitalRead(hall);
@@ -190,10 +189,17 @@ void measureDistance() {
   }
 }
 
-// // 로드셀 모듈로 체중값 읽어오기 
-// void measureWeight() {
-//   //일단 비워두기
-// }
+// 로드셀 모듈로 체중값 읽어오기 
+void measureWeight() {
+  // 로드셀에서 값을 읽습니다.
+  float weight = scale.get_units(50); // 10번의 샘플링 후 평균값을 사용합니다.
+  if (weight > 30) { //측정된 무게가 30kg 이상이면
+    Serial.print("{'Weight': ");
+    Serial.print(weight, 2); // 소수점 두 자리까지 출력합니다.
+    Serial.println("}");
+  }
+  delay(1000); // 1초 대기 후 다음 측정을 수행합니다.
+}
 
 // 시리얼 모니터 출력 테스트용 
 void ForTestSerialMonitor(){
