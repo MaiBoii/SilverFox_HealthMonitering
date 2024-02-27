@@ -8,10 +8,15 @@
 #include "HX711.h"
 
 #define BUZZER_PIN 9 // 스피커에 연결된 핀 번호
+#define DOUT  5  // HX711 DT 핀을 아두이노의 5번 핀에 연결합니다.
+#define SCK  4   // HX711 SCK 핀을 아두이노의 4번 핀에 연결합니다.
 
 // GPS 수신기 객체 및 시리얼 통신 객체 생성
 //SoftwareSerial ss(RXPin, TXPin);
 TinyGPS gps;
+
+// HX711 객체 생성
+HX711 scale;
 
 //응급상황시 스피커 재생 함수
 void musicStart() {
