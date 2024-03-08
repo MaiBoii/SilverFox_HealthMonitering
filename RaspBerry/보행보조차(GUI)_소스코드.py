@@ -112,6 +112,7 @@ async def biological_send_data(rehabilitation_id, bpm, oxygenSaturation, tmp): #
         # 데이터 전송
         await websocket.send(message)
         print('실시간 데이터 전송 완료')
+        
 # ---------------------------------------------------------------------------------------------
 def main():
     global travel_range, slope, rehabilityTimeSecond, rehabilityTime, rehabilityId, rehabilitation_status, button_state # travelRange, slope(?)

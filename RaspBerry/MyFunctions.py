@@ -38,7 +38,6 @@ def isThereTodayWorkout(mycursor, mydb):
     else:
         return False
     
-
 # 긴급 상황시 보호자 스마트폰으로 위치정보 송신
 async def emergencyCall(mycursor, mydb, phone_number):
     mycursor.execute("SELECT * FROM user WHERE phone_number = %s", (phone_number,))
@@ -47,4 +46,3 @@ async def emergencyCall(mycursor, mydb, phone_number):
         return True
     else:
         return False
-    
